@@ -25,7 +25,7 @@
 ## LD_PRELOAD
 Add your malicious *.so* (with your rewritten *sys.calls*) file to **LD_PRELOAD**.
 And every program, which use *syscalls* (rewritten by you) will use your functions for them.
-##### Examples:
+#### Examples:
 
 ```bash
  echo export LD_PRELOAD=/path/to/badguy.so >> ~/.bashrc
@@ -46,7 +46,7 @@ echo export LD_PRELOAD=/path/to/badguy.so >> /etc/profile
 You can read more about how to build this *.so* here:
 *refer: https://xakep.ru/2020/12/29/ld_preload-rootkit/*
 
-##### Detection:
+#### Detection:
 User can see malicious string in */etc/ld.so.preload* or in *~/.bashrc*
 
 
@@ -57,13 +57,13 @@ User can see malicious string in */etc/ld.so.preload* or in *~/.bashrc*
 ##  SSH Authorized Keys
 You can store your pub_rsa key in user's home directories for connecting via ssh by chosen user.
 
-##### Examples:
+#### Examples:
 ```bash
 echo /your_rsa_pub/ >> needed_user_home/.ssh/authorized_keys
 
 ```
 
-##### Detection:
+#### Detection:
 User can see malicious strings in **authorized_keys** file
 
 </br></br>
@@ -72,7 +72,7 @@ User can see malicious strings in **authorized_keys** file
 
 A built-in bash command that is used to execute a command when the shell receives any signal is called `trap`.
 
-##### Example:
+#### Example:
 
 ```bash
 trap '/path/to/badguy' SIGINT
@@ -80,7 +80,7 @@ trap '/path/to/badguy' SIGINT
 
 In this example trigger set on *SIGINT* (Ctrl +C ) signal
 
-##### Detection:
+#### Detection:
 
 User can see malicious activity when he send defined signals.
 
@@ -101,7 +101,7 @@ Adversaries may make modifications to client software binaries to carry out mali
 
 - ***Systemd***
  	
-	##### Example:
+	#### Example:
 	Add your service by modifying this file:
 	```bash
 	vim ~/.config/systemd/user/badguy.service
@@ -172,7 +172,7 @@ Adversaries may make modifications to client software binaries to carry out mali
 Commands, which has written in *~/.bash_profile* will execute with user login.
 Commands, which has written in *~/.bashrc* will execute with every new shell.
 
-##### Examples:
+#### Examples:
 **.bashrc**
 ```bash
 echo /path/to/badguy >> ~/.bashrc
@@ -183,7 +183,7 @@ echo /path/to/badguy >> ~/.bashrc
 echo /path/to/badguy >> ~/.bash_profile
 ```
 
-##### Detection:
+#### Detection:
 User can see malicious string(s) in file(s) **.bashrc** and/or **.bash_profile** 
 
 </br></br>
@@ -194,14 +194,14 @@ User can see malicious string(s) in file(s) **.bashrc** and/or **.bash_profile**
 
 ## rc.local
 
-##### Examples:
+#### Examples:
 
 ```bash
 echo /path/to/badguy >> /etc/rc.local
 ```
 Add your binary to *rc.local* config. On every start of the system your binary will start too.
 
-##### Detection:
+#### Detection:
 User can see malicious string in */etc/rc.local*
 
 </br></br>
@@ -211,7 +211,7 @@ You can load malicious kernel module, for starting your binary.
 
 
 *refer:https://hackersvanguard.com/persistence-with-a-custom-kernel-module/*
-##### Example:
+#### Example:
 
 Compile this *evil* kernel module with name **badguy.c**
 
@@ -247,7 +247,7 @@ now add your module:
 sudo insmod badguy.ko
 ```
 
-##### Detection:
+#### Detection:
 User can see malicious module by
 ```bash
 lsmod

