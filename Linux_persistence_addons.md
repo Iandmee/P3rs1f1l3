@@ -6,13 +6,13 @@
 * [Non-Root](#non-root)
 	* [LD_PRELOAD](#ld_preload)
 	* [SSH authorized keys](#SSH-Authorized-Keys)
-	* [Trap](#Event-Triggered-Execution\:-Trap)
+	* [Trap](#event-triggered-execution-trap)
 	* [Compromise Client Software Binary](#Compromise-Client-Software-Binary)
 	* [Add service](#Add-service)
-	* [~/.bash_profile and ~/.bashrc](#Files-~/.bash_profile-and-~/.bashrc)
+	* [~/.bash_profile and ~/.bashrc](#files-bash_profile-and-bashrc)
 * [Root](#root)
-	* [rc.local](#rc.local)
-	* [Kernel Module Loading](#KML-(Kernel-Module-Loading))
+	* [rc.local](#rclocal)
+	* [Kernel Module Loading](#kml-kernel-module-loading)
 
 
 </br>
