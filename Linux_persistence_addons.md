@@ -1,4 +1,26 @@
+
+# Linux persistence addons
+
+</br>
+
+* [Non-Root](#non-root)
+	* [LD_PRELOAD](#ld_preload)
+	* [SSH authorized keys](#SSH-Authorized-Keys)
+	* [Trap](#Event-Triggered-Execution:-Trap)
+	* [Compromise Client Software Binary](#Compromise-Client-Software-Binary)
+	* [Add service](#Add-service)
+	* [~/.bash_profile and ~/.bashrc](#Files-~/.bash_profile-and-~/.bashrc)
+* [Root](#root)
+	* [rc.local](#rc.local)
+	* [Kernel Module Loading](#KML-(Kernel-Module-Loading))
+
+
+</br>
+
+
 # Non-root
+
+</br>
 
 ## LD_PRELOAD
 Add your malicious *.so* (with your rewritten *sys.calls*) file to **LD_PRELOAD**.
@@ -31,6 +53,7 @@ User can see malicious string in */etc/ld.so.preload* or in *~/.bashrc*
 
 
 </br></br>
+
 ##  SSH Authorized Keys
 You can store your pub_rsa key in user's home directories for connecting via ssh by chosen user.
 
@@ -63,7 +86,7 @@ User can see malicious activity when he send defined signals.
 
 </br></br>
 
-# Compromise Client Software Binary
+## Compromise Client Software Binary
 
 Adversaries may modify client software binaries to establish persistent access to systems. Client software enables users to access services provided by a server. Common client software types are SSH clients, FTP clients, email clients, and web browsers.
 
@@ -164,11 +187,10 @@ echo /path/to/badguy >> ~/.bash_profile
 User can see malicious string(s) in file(s) **.bashrc** and/or **.bash_profile** 
 
 </br></br>
+
 # Root
 
 </br>
-
-
 
 ## rc.local
 
