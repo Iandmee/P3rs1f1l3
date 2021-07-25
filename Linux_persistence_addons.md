@@ -6,11 +6,7 @@
 * [Non-Root](#non-root)
 	* [LD_PRELOAD](#ld_preload)
 	* [SSH authorized keys](#SSH-Authorized-Keys)
-<<<<<<< HEAD
-	* [Trap](#event-triggered-execution-trap)
-=======
-	* [Trap](#Event-Triggered-Execution\:\-Trap)
->>>>>>> 79437e4eb93ffdf18aab50873ef9a675a9e34d72
+	* [Trap](#event-triggered-execution-trap)	
 	* [Compromise Client Software Binary](#Compromise-Client-Software-Binary)
 	* [Add service](#Add-service)
 	* [~/.bash_profile and ~/.bashrc](#files-bash_profile-and-bashrc)
