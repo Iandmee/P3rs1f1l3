@@ -6,7 +6,7 @@
 * [Non-Root](#non-root)
 	* [LD_PRELOAD](#ld_preload)
 	* [SSH authorized keys](#SSH-Authorized-Keys)
-	* [Trap](#Event-Triggered-Execution:-Trap)
+	* [Trap](#Event-Triggered-Execution\:-Trap)
 	* [Compromise Client Software Binary](#Compromise-Client-Software-Binary)
 	* [Add service](#Add-service)
 	* [~/.bash_profile and ~/.bashrc](#Files-~/.bash_profile-and-~/.bashrc)
@@ -23,8 +23,8 @@
 </br>
 
 ## LD_PRELOAD
-Add your malicious *.so* (with your rewritten *sys.calls*) file to **LD_PRELOAD**.
-And every program, which use *syscalls* (rewritten by you) will use your functions for them.
+Add your malicious *.so* (with your rewritten *sys.calls*) file to **LD_PRELOAD**
+and every program, which use *syscalls* (rewritten by you) will use your functions instead of default syscalls.
 #### Examples:
 
 ```bash
@@ -43,7 +43,7 @@ echo export LD_PRELOAD=/path/to/badguy.so >> /etc/profile
 
 
 
-You can read more about how to build this *.so* here:
+You can read more on how to build this *.so* here:
 *refer: https://xakep.ru/2020/12/29/ld_preload-rootkit/*
 
 #### Detection:
@@ -55,7 +55,7 @@ User can see malicious string in */etc/ld.so.preload* or in *~/.bashrc*
 </br></br>
 
 ##  SSH Authorized Keys
-You can store your pub_rsa key in user's home directories for connecting via ssh by chosen user.
+You can store your pub_rsa key in user's home directory to connect via ssh as that user.
 
 #### Examples:
 ```bash
@@ -82,15 +82,15 @@ In this example trigger set on *SIGINT* (Ctrl +C ) signal
 
 #### Detection:
 
-User can see malicious activity when he send defined signals.
+User can see malicious activity when she sends defined signals.
 
 </br></br>
 
 ## Compromise Client Software Binary
 
-Adversaries may modify client software binaries to establish persistent access to systems. Client software enables users to access services provided by a server. Common client software types are SSH clients, FTP clients, email clients, and web browsers.
+Adversaries may modify client software binaries to establish persistent access to system. Client software enables users to access services provided by a server. Common client software types are SSH clients, FTP clients, email clients, and web browsers.
 
-Adversaries may make modifications to client software binaries to carry out malicious tasks when those applications are in use. For example, an adversary may copy source code for the client software, add a backdoor, compile for the target, and replace the legitimate application binary (or support files) with the backdoored one. Since these applications may be routinely executed by the user, the adversary can leverage this for persistent access to the host.
+Adversaries may make modifications of client software binaries to carry out malicious tasks when those applications are in use. For example, an adversary may copy source code for the client software, add a backdoor, compile for the target, and replace the legitimate application binary (or libraries) with the backdoored one. Since these applications may be routinely executed by the user, the adversary can leverage this for persistent access to the host.
 
 *refer: https://attack.mitre.org/techniques/T1554/*
 
@@ -113,7 +113,7 @@ Adversaries may make modifications to client software binaries to carry out mali
 	vim /etc/systemd/system/badguy.service
 	```
 	
-	with this inside:
+	with this content:
 	
 	```Unit
 	[Unit]
@@ -147,7 +147,7 @@ Adversaries may make modifications to client software binaries to carry out mali
 
 - ***Runit***  (***ROOT NEEDED!!!***)
 	
-	If runit installed not installed on the system:
+	If runit is not installed on the system:
 	```bash
 	sudo apt-get install runit
 	```
@@ -159,7 +159,7 @@ Adversaries may make modifications to client software binaries to carry out mali
 	
 	exec /path/to/badguy_program
 	```
-	Services, located in  */etc/sv/*, won't execute before links on them not in */etc/service/*:
+	Services, located in  */etc/sv/*, won't execute without links on them in */etc/service/*:
 	
 	```bash
 	ln -s /etc/sv/badguy /etc/service/badguy
@@ -169,8 +169,8 @@ Adversaries may make modifications to client software binaries to carry out mali
 
 ## Files ~/.bash_profile and ~/.bashrc
 
-Commands, which has written in *~/.bash_profile* will execute with user login.
-Commands, which has written in *~/.bashrc* will execute with every new shell.
+Commands written in *~/.bash_profile* will execute with every user login.
+Commands written in *~/.bashrc* will execute with every new shell.
 
 #### Examples:
 **.bashrc**
@@ -184,7 +184,7 @@ echo /path/to/badguy >> ~/.bash_profile
 ```
 
 #### Detection:
-User can see malicious string(s) in file(s) **.bashrc** and/or **.bash_profile** 
+User can see malicious strings in files **.bashrc** and/or **.bash_profile** 
 
 </br></br>
 
@@ -199,7 +199,7 @@ User can see malicious string(s) in file(s) **.bashrc** and/or **.bash_profile**
 ```bash
 echo /path/to/badguy >> /etc/rc.local
 ```
-Add your binary to *rc.local* config. On every start of the system your binary will start too.
+Add your binary to *rc.local* config. On every system startup your binary will be executed.
 
 #### Detection:
 User can see malicious string in */etc/rc.local*
@@ -207,7 +207,7 @@ User can see malicious string in */etc/rc.local*
 </br></br>
 
 ## KML (Kernel Module Loading)
-You can load malicious kernel module, for starting your binary.
+You can load malicious kernel module that starts your binary.
 
 
 *refer:https://hackersvanguard.com/persistence-with-a-custom-kernel-module/*
@@ -248,7 +248,7 @@ sudo insmod badguy.ko
 ```
 
 #### Detection:
-User can see malicious module by
+User can see malicious module by executing
 ```bash
 lsmod
 ```
