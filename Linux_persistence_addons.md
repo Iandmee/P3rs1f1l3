@@ -152,7 +152,7 @@ Adversaries may make modifications of client software binaries to carry out mali
 	sudo apt-get install runit
 	```
 	
-	you need to have file **run** in */etc/sv/badguy* folder(*badguy* == name of your service) like:
+	you need to have file **run** (executable) in */etc/sv/badguy* folder(*badguy* == name of your service) like:
 	
 	```bash
 	#!/bin/bash
