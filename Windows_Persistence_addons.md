@@ -332,10 +332,8 @@ User can see **PATH** variable
 The Print Spooler service is responsible for managing printing jobs in OS Windows. Interaction with the service is performed through the Print Spooler API which contains a function (**AddMonitor**) that can be used to install local port monitors and connect the configuration, data and monitor files. This function has the ability to inject a DLL into the **spoolsv.exe** process and by creating a registry key red team operators can achieve persistence on the system. 
 
 *refers:* 
-*
-https://pentestlab.blog/2019/10/28/persistence-port-monitors/
-*
-	 https://www.ired.team/offensive-security/persistence/t1013-addmonitor#execution
+* https://pentestlab.blog/2019/10/28/persistence-port-monitors/
+* https://www.ired.team/offensive-security/persistence/t1013-addmonitor#execution
 
 
 #### Example:
