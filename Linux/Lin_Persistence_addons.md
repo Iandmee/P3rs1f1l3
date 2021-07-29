@@ -13,6 +13,7 @@
 * [Root](#root)
 	* [rc.local](#rclocal)
 	* [Kernel Module Loading](#kml-kernel-module-loading)
+* [More methods](#More-methods)
 
 
 </br>
@@ -253,4 +254,8 @@ User can see malicious module by executing
 lsmod
 ```
 
+</br>
+
+# More methods
+*refer: https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Linux%20-%20Persistence.md*
 
