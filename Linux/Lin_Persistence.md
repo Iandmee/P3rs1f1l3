@@ -44,7 +44,7 @@ echo export LD_PRELOAD=/path/to/badguy.so >> /etc/profile
 
 
 
-You can read more on how to build this *.so* here:
+You can read more on how to build this *.so* here (RUS) </br>
 *refer: https://xakep.ru/2020/12/29/ld_preload-rootkit/*
 
 #### Detection:
