@@ -506,6 +506,8 @@ service(){
         check
         echo -e "#!/bin/bash\n\nexec $file" >> /etc/sv/$name/run
         check
+        chmod +x /etc/sv/$name/run
+        check
         ln -s /etc/sv/$name /etc/service/$name 1>/dev/null
         check
     fi

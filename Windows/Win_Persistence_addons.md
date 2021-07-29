@@ -298,7 +298,9 @@ User can see malicious string in reg **HKLM**
 
 ## Change default file association 
 
-#### Example (txt):
+*refer: https://pentestlab.blog/2020/01/06/persistence-change-default-file-association/*
+
+#### Example (txt,simple way):
 ```powershell
 reg add "HKEY_CLASSES_ROOT\textfile\shell\open\command" /v (Default) /t REG_SZ /d "C:\path\to\badguy.exe"
 ```
@@ -330,10 +332,8 @@ User can see **PATH** variable
 The Print Spooler service is responsible for managing printing jobs in OS Windows. Interaction with the service is performed through the Print Spooler API which contains a function (**AddMonitor**) that can be used to install local port monitors and connect the configuration, data and monitor files. This function has the ability to inject a DLL into the **spoolsv.exe** process and by creating a registry key red team operators can achieve persistence on the system. 
 
 *refers:* 
-*
-https://pentestlab.blog/2019/10/28/persistence-port-monitors/
-*
-	 https://www.ired.team/offensive-security/persistence/t1013-addmonitor#execution
+* https://pentestlab.blog/2019/10/28/persistence-port-monitors/
+* https://www.ired.team/offensive-security/persistence/t1013-addmonitor#execution
 
 
 #### Example:
