@@ -4,15 +4,15 @@
 </br>
 
 * [Non-Root](#non-root)
-	* [LD_PRELOAD](#ld_preload)
-	* [SSH authorized keys](#SSH-Authorized-Keys)
-	* [Trap](#event-triggered-execution-trap)	
-	* [Compromise Client Software Binary](#Compromise-Client-Software-Binary)
-	* [Add service](#Add-service)
-	* [~/.bash_profile and ~/.bashrc](#files-bash_profile-and-bashrc)
+	* [:heavy_check_mark: LD_PRELOAD](#ld_preload)
+	* [:heavy_check_mark: SSH authorized keys](#SSH-Authorized-Keys)
+	* [:heavy_check_mark: Trap](#event-triggered-execution-trap)	
+	* [:heavy_check_mark: Compromise Client Software Binary](#Compromise-Client-Software-Binary)
+	* [:heavy_check_mark: Add service](#Add-service)
+	* [:heavy_check_mark: ~/.bash_profile and ~/.bashrc](#files-bash_profile-and-bashrc)
 * [Root](#root)
-	* [rc.local](#rclocal)
-	* [Kernel Module Loading](#kml-kernel-module-loading)
+	* [:heavy_check_mark: rc.local](#rclocal)
+	* [:heavy_check_mark: Kernel Module Loading](#kml-kernel-module-loading)
 * [More methods](#More-methods)
 
 
