@@ -253,9 +253,3 @@ User can see malicious module by executing
 ```bash
 lsmod
 ```
-
-</br>
-
-# More methods
-*refer: https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Linux%20-%20Persistence.md*
-
