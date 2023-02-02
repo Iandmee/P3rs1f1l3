@@ -489,11 +489,6 @@ User can see strange AMSI Provider in reg.
 
 *refer: https://pentestlab.blog/2020/05/20/persistence-com-hijacking/*
 
-</br>
-
-# More methods
-
-*refer: https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20Persistence.md*
 
 
 
